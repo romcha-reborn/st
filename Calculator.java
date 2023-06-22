@@ -7,15 +7,16 @@ public static void main(String[] args) throws IOException {
     // String request[] = sc.nextLine().split(" ");
     // sc.close();
 
-        String request[] = readFile("D:\\temp\\text.txt").split(" ");
+    String request[] = new String[2];
 
-    /* try {
-        String request[] = readFile("D:\\temp\\text.txt").split(" ");
+    try {
+        request = readFile("D:\\temp\\text.txt").split(" ");
     } catch (IOException ex) 
         {
         System.out.println(ex.getMessage());
-        } */
+        }
 
+    double whatIsFor = 0.0;
     boolean isNumbers = false;
     boolean isOperable = false;
     if (isNumerical(request[0]) && isNumerical(request[2]))
@@ -27,18 +28,32 @@ public static void main(String[] args) throws IOException {
         try {
             double sarg = Double.parseDouble(request[2]);
             if (request[1].equals("/") && sarg == 0) throw new Exception("Error! Division by zero");
-            else System.out.print(calculate(request));
+            else 
+                {whatIsFor = calculate(request); System.out.println(whatIsFor);}
             }
         catch (Exception ex)
             {
             System.out.println(ex.getMessage());
             }
         }
-    } 
+    
+    try {writeFile(whatIsFor);}
+    catch (IOException ex2) {System.out.println(ex2.getMessage());} 
+
+
+    } // Конец метода main
+
+public static void writeFile(double d) throws IOException {
+    FileWriter fw = new FileWriter ("D:\\temp\\output.txt");
+    String outcome = "" + d;
+    fw.write(outcome);
+    fw.close();
+    }
 public static String readFile(String path) throws IOException {
     FileReader fr = new FileReader(path);
     Scanner scanf = new Scanner(fr);
     String s = scanf.nextLine();
+    fr.close();
     return s;
     }
 public static double calculate(String[] request) {
