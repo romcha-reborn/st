@@ -1,11 +1,21 @@
-import java.util.*;
+import java.util.*; import java.io.*;
 import static java.lang.System.*;
 
 public class Calculator {
-public static void main(String[] args) {
-    Scanner sc = new Scanner(in);
-    String request[] = sc.nextLine().split(" ");
-    sc.close();
+public static void main(String[] args) throws IOException {
+    // Scanner sc = new Scanner(in);
+    // String request[] = sc.nextLine().split(" ");
+    // sc.close();
+
+        String request[] = readFile("D:\\temp\\text.txt").split(" ");
+
+    /* try {
+        String request[] = readFile("D:\\temp\\text.txt").split(" ");
+    } catch (IOException ex) 
+        {
+        System.out.println(ex.getMessage());
+        } */
+
     boolean isNumbers = false;
     boolean isOperable = false;
     if (isNumerical(request[0]) && isNumerical(request[2]))
@@ -24,6 +34,12 @@ public static void main(String[] args) {
             System.out.println(ex.getMessage());
             }
         }
+    } 
+public static String readFile(String path) throws IOException {
+    FileReader fr = new FileReader(path);
+    Scanner scanf = new Scanner(fr);
+    String s = scanf.nextLine();
+    return s;
     }
 public static double calculate(String[] request) {
     double farg = Double.parseDouble(request[0]); 
