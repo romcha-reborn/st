@@ -1,0 +1,6 @@
+org/
+out/
+.idea/
+
+*.log
+stepic.iml
