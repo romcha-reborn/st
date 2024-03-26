@@ -1,4 +1,7 @@
-import javax.swing.*; import java.awt.*; import java.awt.geom.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+import java.awt.*; import java.awt.geom.*;
 
 public class TrafficLight extends JFrame {
 
