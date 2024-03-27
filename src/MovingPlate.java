@@ -1,55 +1,71 @@
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.Timer;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MovingPlate extends JFrame {
-    private JLabel imageLabel;
-    private int x;
-    private int y;
-
-    public MovingPlate() {
-        setTitle("Движущееся изображение");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 600);
-        setLayout(null);
-
-        ImageIcon imageIcon = new ImageIcon("brig.jpg");
-        imageLabel = new JLabel(imageIcon);
-        imageLabel.setSize(200, 200);
-        imageLabel.setLocation(0, 0);
-        add(imageLabel);
-        revalidate();
-        setVisible(true);
-
-        x = 0;
-        y = 0;
-
-        ActionListener moveAction = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                moveImage();
-            }
-        };
-
-        Timer timer = new Timer(10, moveAction);
-        timer.start();
-        }
-
-    private void moveImage() {
-        x += 1;
-        y += 1;
-        if (x > getWidth() || y > getHeight()) {
-            x = 0;
-            y = 0;
-            }
-        imageLabel.setLocation(x, y);
-    }
-
+public class MovingPlate {
     public static void main(String[] args) {
-        MovingPlate frame = new MovingPlate();
-        frame.revalidate();
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Square Movement");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(400, 400);
+
+            JPanel panel = new JPanel() {
+                private int x = 0;
+                private int y = 0;
+                private int step = 5;
+                private int direction = 0; // 0: right, 1: down, 2: left, 3: up
+
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    g.setColor(Color.BLUE);
+                    g.fillRect(x, y, 50, 50);
+                }
+
+                private void moveSquare() {
+                    switch (direction) {
+                        case 0:
+                            x += step;
+                            if (x >= getWidth() - 50) {
+                                direction = 1;
+                            }
+                            break;
+                        case 1:
+                            y += step;
+                            if (y >= getHeight() - 50) {
+                                direction = 2;
+                            }
+                            break;
+                        case 2:
+                            x -= step;
+                            if (x <= 0) {
+                                direction = 3;
+                            }
+                            break;
+                        case 3:
+                            y -= step;
+                            if (y <= 0) {
+                                direction = 0;
+                            }
+                            break;
+                    }
+                    repaint();
+                }
+
+                {
+                    Timer timer = new Timer(100, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            moveSquare();
+                        }
+                    });
+                    timer.start();
+                }
+            };
+
+            frame.add(panel);
+            frame.setVisible(true);
+        });
     }
 }
